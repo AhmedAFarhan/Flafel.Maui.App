@@ -1,0 +1,24 @@
+<li class="list-item @(IsActive ? "active" : "")">
+
+    <a href="@Address" class="list-item__title-link" @onclick="ItemClickHandler">
+        <i class="@Icon"></i>
+        <span class="list-item__title-name">@Title</span>
+    </a>
+
+</li>
+
+@code {
+    [Parameter]
+    public string Address { get; set; } = default!;
+
+    [Parameter]
+    public string Icon { get; set; } = default!;
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public bool IsActive { get; set; }
+
+    private void ItemClickHandler() => IsActive ^= true;
+}

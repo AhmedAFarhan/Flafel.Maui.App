@@ -1,0 +1,28 @@
+<OverlayUI OnClick="@OnClick"></OverlayUI>
+<PopupUI>
+    <p class="form__header">@Header</p>
+    <p class="form__title">@Title</p>
+    @ChildContent
+    @if (IsLoading)
+	{
+		<Loading/>
+	}
+</PopupUI>
+
+@code{
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public string Header { get; set; } = default!;
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public bool IsLoading { get; set; } = false;
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+}

@@ -1,0 +1,30 @@
+﻿.input-control {
+    width: 100%;
+    margin: 0rem 0.0rem;
+    margin-bottom: 1rem;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+}
+
+.input label {
+    margin-bottom: 0.25rem;
+    font-size: 1.2rem;
+}
+
+.input__content {
+    position: relative;
+    /*    border: 1px solid var(--color-main);*/
+    border-radius: 0.5rem;
+}
+
+.input i {
+    /*    color: white !important;*/
+    font-size: 1.3rem;
+    color: var(--color-primary-dark);
+    position: absolute;
+    top: 50%;
+    transform: translate(-0.8rem, -50%);
+}

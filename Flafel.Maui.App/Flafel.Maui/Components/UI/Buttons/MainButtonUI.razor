@@ -1,0 +1,19 @@
+
+<button class="@Classes" type="@(IsSubmit ? "submit" : "button")" @onclick="@OnClick">@ChildContent</button>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public bool IsSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public string Class { get; set; }
+
+    public string Classes { get => Class is null ? "button" : $"button {Class}"; }
+
+}

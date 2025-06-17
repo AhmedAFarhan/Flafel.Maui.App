@@ -1,0 +1,11 @@
+﻿global using Flafel.Domain.Models;
+global using Flafel.Applications.Contracts.Base;
+global using MediatR;
+global using Mapster;
+global using Flafel.Applications.Contracts;
+global using Flafel.Applications.CQRS;
+global using Flafel.Applications.UnitOfWork;
+global using FluentValidation;
+global using Flafel.Applications.Exceptions;
+global using Flafel.Domain.Enums;
+global using Flafel.Applications.Extensions;

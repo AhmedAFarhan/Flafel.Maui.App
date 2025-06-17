@@ -1,0 +1,12 @@
+﻿@using Flafel.Maui.Security;
+@inject CustomAuthStateProvider AuthProvider
+
+<h3>Welcome Page</h3>
+<button @onclick="LogoutHandler">LogOut</button>
+
+@code {
+    private async Task LogoutHandler()
+    {
+        await AuthProvider.SignedOutAsync();
+    }
+}

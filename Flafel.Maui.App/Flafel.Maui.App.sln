@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flafel.Infrastructure", "Flafel.Infrastructue\Flafel.Infrastructure.csproj", "{43555E7A-1449-444B-8D6E-D7D728F65DBE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flafel.Maui", "Flafel.Maui\Flafel.Maui.csproj", "{90789181-EA0B-453A-AB3F-91B8AFF0A85A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flafel.Migrations", "Flafel.Migrations\Flafel.Migrations.csproj", "{FFCF51AA-0C54-470B-B769-751B7A2298EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flafel.Domain", "Flafel.Domain\Flafel.Domain.csproj", "{3C1EF58F-AE6A-4882-A8F1-F6547350461C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flafel.Applications", "Flafel.Applications\Flafel.Applications.csproj", "{57DE5119-C004-4AC8-8DC2-CF61DCD369D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43555E7A-1449-444B-8D6E-D7D728F65DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43555E7A-1449-444B-8D6E-D7D728F65DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43555E7A-1449-444B-8D6E-D7D728F65DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43555E7A-1449-444B-8D6E-D7D728F65DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90789181-EA0B-453A-AB3F-91B8AFF0A85A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90789181-EA0B-453A-AB3F-91B8AFF0A85A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90789181-EA0B-453A-AB3F-91B8AFF0A85A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{90789181-EA0B-453A-AB3F-91B8AFF0A85A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90789181-EA0B-453A-AB3F-91B8AFF0A85A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90789181-EA0B-453A-AB3F-91B8AFF0A85A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FFCF51AA-0C54-470B-B769-751B7A2298EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFCF51AA-0C54-470B-B769-751B7A2298EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFCF51AA-0C54-470B-B769-751B7A2298EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFCF51AA-0C54-470B-B769-751B7A2298EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C1EF58F-AE6A-4882-A8F1-F6547350461C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C1EF58F-AE6A-4882-A8F1-F6547350461C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C1EF58F-AE6A-4882-A8F1-F6547350461C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C1EF58F-AE6A-4882-A8F1-F6547350461C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57DE5119-C004-4AC8-8DC2-CF61DCD369D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57DE5119-C004-4AC8-8DC2-CF61DCD369D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57DE5119-C004-4AC8-8DC2-CF61DCD369D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57DE5119-C004-4AC8-8DC2-CF61DCD369D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CC275E0-E4C6-438A-B023-8C38738E6061}
+	EndGlobalSection
+EndGlobal

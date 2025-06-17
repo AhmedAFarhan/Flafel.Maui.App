@@ -1,0 +1,52 @@
+﻿@using Flafel.Applications.Dtos.UserDtos
+@using Flafel.Applications.Features.UserFeature.Commands.Login
+@using Blazored.FluentValidation;
+@inject ISender sender
+@inject CustomAuthStateProvider AuthProvider
+
+<TitledForm OnClick="@OnClick" Header="مرحباً بعودتك!" Title="قم بتسجيل الدخول من جديد للتطبيق." IsLoading="@isLoading">
+	<EditForm Model="@LoginCommand" OnValidSubmit="@SubmitFormHandler">
+		<FluentValidationValidator/>
+		<CenterVerticalWrapperUI>
+			<InputsControlsWrapperUI>
+				<TextInputUI FontAwesomeIcon="fa-solid fa-user" Label="اسم المستخدم*" Placeholder="ادخل اسم المستخدم" @bind-Value="LoginCommand.UserLogin.Username" ValidationFor="@(() => LoginCommand.UserLogin.Username)" />
+				<PasswordInputUI FontAwesomeIcon="fa-solid fa-lock-keyhole" Label="كلمة المرور*" Placeholder="ادخل كلمة المرور" @bind-Value="LoginCommand.UserLogin.Password" ValidationFor="@(() => LoginCommand.UserLogin.Password)" />
+			</InputsControlsWrapperUI>			
+			<MainButtonUI IsSubmit="true">دخول</MainButtonUI>
+			<FormError IsShown="@(!string.IsNullOrEmpty(errorMessage))">@errorMessage</FormError>
+		</CenterVerticalWrapperUI>
+	</EditForm>
+</TitledForm>
+
+@code {
+
+	private bool isLoading = false;
+	private string errorMessage = string.Empty;
+
+	public LoginCommand LoginCommand { get; set; } = new LoginCommand(new UserLoginRequestDto());
+
+	[Parameter]
+	public EventCallback OnClick { get; set; }
+
+	private async Task SubmitFormHandler()
+	{
+		try
+		{
+			errorMessage = string.Empty;
+			isLoading = true;
+			await Task.Delay(1000);
+			var result = await sender.Send(LoginCommand);
+			await AuthProvider.SignedInAsync(result.user);
+		}
+		catch(Exception ex)
+		{
+			errorMessage = ex.Message;
+		}
+		finally
+		{
+			isLoading = false;
+		}
+	}
+}
+
+

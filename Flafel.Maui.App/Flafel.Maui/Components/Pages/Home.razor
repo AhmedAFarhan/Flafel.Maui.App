@@ -1,0 +1,11 @@
+﻿@page "/"
+
+<AuthorizeView>
+    <Authorized>
+        <WelcomeControl/>
+    </Authorized>
+    <NotAuthorized>
+        <AuthControl />
+    </NotAuthorized>
+</AuthorizeView>
+

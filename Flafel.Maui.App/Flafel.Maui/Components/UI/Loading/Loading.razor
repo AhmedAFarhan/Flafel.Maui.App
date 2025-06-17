@@ -1,0 +1,11 @@
+<div class="@Classes">
+    <div class="loader"></div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string Class { get; set; }
+
+    public string Classes { get => Class is null ? "loader-box" : $"loader-box {Class}"; }
+}

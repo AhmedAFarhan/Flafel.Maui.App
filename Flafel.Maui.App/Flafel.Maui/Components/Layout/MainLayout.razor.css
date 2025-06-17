@@ -1,0 +1,21 @@
+.page {
+    position: relative;
+    display: flex;
+    height: calc(100vh - 7rem);
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow-Y: auto;
+}
+
+main {
+    width: 100%;
+    background-color: var(--color-very-light-gray);
+}
+
+.open {
+    margin-right: 16rem;
+}
+
+.normal {
+    margin-right: 0rem;
+}

@@ -1,0 +1,41 @@
+﻿@using Flafel.Infrastructure.Helpers;
+@inject InitialDatabase initDatabse
+
+<CascadingAuthenticationState>
+@* @if (inInitialization)
+{
+    <SplashComponent/>
+}
+else
+{
+    
+
+} *@
+    <Router AppAssembly="@typeof(MauiProgram).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+    </Router>
+</CascadingAuthenticationState>
+    
+
+@code{
+    private bool inInitialization = false;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     try
+    //     {
+    //         inInitialization = true;
+    //         await Task.Delay(1000);
+    //         await initDatabse.InitializeAsync();
+    //         inInitialization = false;
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         //Something went wrong
+    //     }
+    // }
+}
+

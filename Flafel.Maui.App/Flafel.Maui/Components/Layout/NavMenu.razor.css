@@ -1,0 +1,60 @@
+.sidebar {
+    padding: 1rem 0rem;
+    width: 16rem;
+    height: calc(100vh - 7rem);
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: white;
+    /*    transition: all .5s ease;*/
+    direction: rtl;
+    z-index: 10;
+    margin: 3.5rem;
+    color: var(--color-secondary);
+    border-left: 1px solid var(--color-dark-gray);
+}
+
+.sidebar__logo{
+    display : flex;
+    justify-content : center;
+    align-items : center;
+}
+
+.sidebar__logo-content {
+    background-color: var(--color-primary-light);
+    padding: 0.5rem;
+    border-radius: 100%;
+    box-shadow: inset 4px 4px 5px rgba(255,255,255,0.3), inset -4px -4px 5px rgba(0,0,0,0.1);
+    margin-left : 0.5rem;
+}
+
+.sidebar__logo-content i{
+    font-size : 1.5rem;
+    color : white;
+}
+
+.sidebar__logo p {
+    padding: 0rem;
+    margin: 0rem;
+    font-family: 'ReemKufi Regular', sans-serif;
+    font-size: 1.8rem;
+    color: var(--color-primary-light);
+    font-weight : 600;
+}
+
+/* --------- List ------------ */
+
+nav {
+    height: 100%;
+}
+
+.sidebar-list {
+    list-style-type: none;
+    padding: 3rem 0 10rem 0;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidebar-list::-webkit-scrollbar {
+    display: none;
+}

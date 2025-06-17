@@ -1,0 +1,30 @@
+﻿<div class="auth">
+    <div class="auth__side auth__side--left">
+        <div class="auth__side-left-content">
+            <h1>سكالانس</h1>
+            <p>يمكنك من خلال هذا التطبيق إدارة مطعمك وطباعة الفاوتير والتقارير بمختلف انواعها, ان هذا التطبيق يكون متصل بالشبكة الداخلية للمطعم لسهولة التعامل على الاجهزة المختلقة.</p>
+            <MainButtonUI OnClick="@ShowLoginFormHandler" Class="auth__btn">تسجيل الدخول</MainButtonUI>
+        </div>
+    </div>
+    <div class="auth__side auth__side--right">
+        <div class="auth__logo">
+            <i class="fa-solid fa-falafel"></i>
+            <h3>سكالانس</h3>
+        </div>
+        <div class="auth__img-container">
+            <img class="auth__img" src="./Assets/Images/auth-image.png" alt="auth-image"/>
+        </div>
+    </div>
+</div>
+
+@if (showLoginForm)
+{
+    <LoginForm OnClick="@(()=>showLoginForm = false)" />
+}
+
+@code {
+
+    private bool showLoginForm = false;
+
+    private void ShowLoginFormHandler() => showLoginForm = true;
+}

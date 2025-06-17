@@ -1,0 +1,15 @@
+
+<div>
+    <DefaultError Class="top-margin" IsShown="@IsShown">@ChildContent</DefaultError>
+</div>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public bool IsShown { get; set; }
+
+}
+

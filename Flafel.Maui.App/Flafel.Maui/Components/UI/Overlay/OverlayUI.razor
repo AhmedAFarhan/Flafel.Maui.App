@@ -1,0 +1,7 @@
+<div class="overlay" @onclick="@OnClick"></div>
+
+@code {
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+}

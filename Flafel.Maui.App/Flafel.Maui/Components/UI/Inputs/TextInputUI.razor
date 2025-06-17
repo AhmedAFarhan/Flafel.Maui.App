@@ -1,0 +1,13 @@
+@inherits Flafel.Maui.Components.UI.Inputs.Base.InputBase<string>
+
+<InputLayoutUI FontAwesomeIcon="@FontAwesomeIcon" Id="@Id" Label="@Label" ShowValidationErrors="@ShowValidationErrors" ValidationMessages="@ValidationMessages">
+    <input id="@Id" type="text" class="@ValidationClass" @bind="BindValue" @oninput="HandleInput" placeholder="@Placeholder" />
+</InputLayoutUI>
+
+@code {
+
+    private void HandleInput(ChangeEventArgs e)
+    {
+        BindValue = e.Value?.ToString();
+    }
+}

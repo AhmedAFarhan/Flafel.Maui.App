@@ -1,0 +1,31 @@
+﻿@inherits LayoutComponentBase
+@using Flafel.Infrastructure.Helpers;
+@inject InitialDatabase initDatabse
+@inject CustomAuthStateProvider AuthProvider
+
+<div class="page">
+
+    <AuthorizeView>
+        <Authorized>
+            <NavMenu/>
+        </Authorized>
+    </AuthorizeView>
+
+    <main class="@(!IsAuth ? "normal" : IsOpen ? "open" : "")">
+        @Body
+    </main>
+
+</div>
+
+@code {
+
+    private bool isLoading = false;
+
+    public bool IsOpen { get; set; } = true;
+
+    public bool IsLoggedIn { get; set; } = false;
+
+    private void ExpandBody() => IsOpen ^= true;
+
+    private bool IsAuth { get => AuthProvider.IsSignedIn; }
+}

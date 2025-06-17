@@ -1,0 +1,25 @@
+﻿
+.list-item {
+    font-size: 1.3rem;
+}
+
+.list-item i {
+    margin-left : 0.5rem;
+}
+
+.list-item a {
+    display: block;
+    padding: 0.75rem;
+    padding-right: 2.5rem;
+    font-weight: 600;
+    color: var(--color-very-dark-gray);
+}
+
+.list-item.active {
+    background-image: linear-gradient(to left, white, #A3E5C7);
+}
+
+.list-item.active a {
+    color: var(--color-primary-light);
+    border-left: 0.25rem solid var(--color-primary-light);
+}

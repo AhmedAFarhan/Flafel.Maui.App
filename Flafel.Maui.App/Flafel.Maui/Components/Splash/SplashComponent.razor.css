@@ -1,0 +1,18 @@
+﻿.splash {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    height: calc(100vh - 7rem);
+}
+
+.splash i {
+    font-size : 4rem;
+    margin-bottom : 1rem;
+}
+
+.splash h1 {
+    font-family: 'ReemKufi Regular', sans-serif;
+    font-size: 4rem;
+}

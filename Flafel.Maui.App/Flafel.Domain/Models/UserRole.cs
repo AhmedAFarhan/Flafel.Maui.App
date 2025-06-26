@@ -1,6 +1,6 @@
 ﻿namespace Flafel.Domain.Models
 {
-    public class UserRole 
+    public class UserRole
     {
         private readonly List<UserRolePermission> _userRolePermissions = new();
         public IReadOnlyList<UserRolePermission> UserRolePermissions => _userRolePermissions.AsReadOnly();

@@ -1,0 +1,20 @@
+﻿.page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.page__actions {
+    margin-right: auto;
+    margin-bottom: 0.5rem;
+}
+.page__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page__result {
+    position: relative;
+    font-size: 1.4rem;
+}

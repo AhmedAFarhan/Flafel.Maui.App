@@ -1,0 +1,21 @@
+﻿<div class="form">
+	<TitledPageFormUI Header="مستخدم جديد" Title="أضف مستخدم جديد وحدد صلاحيات المستخدم" Icon="fa-solid fa-user-plus">
+
+	</TitledPageFormUI>
+    @* <EditForm Model="@LoginCommand" OnValidSubmit="@SubmitFormHandler">
+		<FluentValidationValidator/>
+		<CenterVerticalWrapperUI>
+			<InputsControlsWrapperUI>
+				<TextInputUI FontAwesomeIcon="fa-solid fa-user" Label="اسم المستخدم*" Placeholder="ادخل اسم المستخدم" @bind-Value="LoginCommand.UserLogin.Username" ValidationFor="@(() => LoginCommand.UserLogin.Username)" />
+				<PasswordInputUI FontAwesomeIcon="fa-solid fa-lock-keyhole" Label="كلمة المرور*" Placeholder="ادخل كلمة المرور" @bind-Value="LoginCommand.UserLogin.Password" ValidationFor="@(() => LoginCommand.UserLogin.Password)" />
+			</InputsControlsWrapperUI>			
+			<MainButtonUI IsSubmit="true">دخول</MainButtonUI>
+			<FormError IsShown="@(!string.IsNullOrEmpty(errorMessage))">@errorMessage</FormError>
+		</CenterVerticalWrapperUI>
+	</EditForm> *@
+</div>
+
+
+@code{
+
+}

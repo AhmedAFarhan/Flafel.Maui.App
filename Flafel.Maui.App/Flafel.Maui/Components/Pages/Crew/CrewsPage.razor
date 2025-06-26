@@ -1,0 +1,58 @@
+﻿@page "/crew"
+@using Microsoft.AspNetCore.Components
+
+<div class="page">
+    <div class="container">
+        <header>
+            <h1>Scrollable Table with Popups</h1>
+        </header>
+        <div class="content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Row</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 1; i <= 20; i++)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td style="position: relative;">
+                                    <button @onclick="(() => TogglePopup(i))">Action</button>
+                                    <div class="popup" style="@(IsPopupVisible(i) ? "display: block;" : "display: none;")">
+                                        Popup Content for Row @i
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <footer>
+            <p>Footer Content</p>
+        </footer>
+    </div>
+
+</div>
+@code {
+    private Dictionary<int, bool> PopupStates = new();
+
+    private void TogglePopup(int rowIndex)
+    {
+        if (PopupStates.ContainsKey(rowIndex))
+        {
+            PopupStates[rowIndex] = !PopupStates[rowIndex];
+        }
+        else
+        {
+            PopupStates[rowIndex] = true;
+        }
+    }
+
+    private bool IsPopupVisible(int rowIndex) =>
+        PopupStates.TryGetValue(rowIndex, out var isVisible) && isVisible;
+}

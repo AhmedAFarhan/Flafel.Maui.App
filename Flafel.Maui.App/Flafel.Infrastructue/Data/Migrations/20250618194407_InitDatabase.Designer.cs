@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flafel.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250616115909_InitDatabase")]
+    [Migration("20250618194407_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
@@ -252,7 +252,7 @@ namespace Flafel.Infrastructure.Data.Migrations
             modelBuilder.Entity("Flafel.Domain.Models.UserRole", b =>
                 {
                     b.HasOne("Flafel.Domain.Models.Role", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -273,6 +273,11 @@ namespace Flafel.Infrastructure.Data.Migrations
                         .HasForeignKey("UserRoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Flafel.Domain.Models.Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Flafel.Domain.Models.SystemUser", b =>

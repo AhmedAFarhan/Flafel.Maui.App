@@ -1,0 +1,103 @@
+<div class="@Classes">
+    <ul class="pagination__list">
+        @if (StartPage > 1)
+        {
+            <li>
+                <MainButtonUI Class="pagination__btn pagination__btn--arrow" OnClick="@ShowPreviousRange">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </MainButtonUI>
+            </li>
+        }
+        @foreach (var pageNum in GetPageNumbers())
+        {
+            <li>
+                <MainButtonUI Class="@(pageNum == CurrentPage ? "pagination__btn active" : "pagination__btn")" OnClick="@(() => ChangePage(pageNum))">
+                    @pageNum
+                </MainButtonUI>
+            </li>
+        }
+        @if (EndPage < TotalPages)
+        {
+            <li>
+                <MainButtonUI Class="pagination__btn pagination__btn--arrow" OnClick="@ShowNextRange">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </MainButtonUI>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    [Parameter]
+    public int TotalPages { get; set; }
+
+    [Parameter]
+    public int PagesPerView { get; set; } = 6; // Number of pages displayed at a time
+
+    [Parameter] 
+    public EventCallback<int> OnPageChanged { get; set; }
+
+    [Parameter]
+    public string Class { get; set; }
+
+    public string Classes { get => Class is null ? "pagination" : $"pagination {Class}"; }
+
+    public int CurrentPage { get; set; } = 1;
+
+    private int StartPage => ((CurrentPage - 1) / PagesPerView) * PagesPerView + 1;
+
+    private int EndPage => Math.Min(StartPage + PagesPerView - 1, TotalPages);
+
+
+    private IEnumerable<int> GetPageNumbers()
+    {
+        return Enumerable.Range(StartPage, EndPage - StartPage + 1);
+    }
+
+    private async Task ChangePage(int page)
+    {
+        if (IsLoading)
+            return;
+
+        if (page != CurrentPage && page >= 1 && page <= TotalPages)
+        {
+            CurrentPage = page;
+            await OnPageChanged.InvokeAsync(page);
+        }
+    }
+
+    private async Task ShowNextRange()
+    {
+        if (IsLoading)
+            return;
+
+        if (EndPage == TotalPages)
+            return;
+
+        if (EndPage < TotalPages)
+        {
+            CurrentPage = EndPage + 1;
+            await OnPageChanged.InvokeAsync(CurrentPage);
+        }
+    }
+
+    private async Task ShowPreviousRange()
+    {
+        if (IsLoading)
+            return;
+
+        if (StartPage == 1)
+            return;
+
+        if (StartPage > 1)
+        {
+            CurrentPage = StartPage - 1;
+            await OnPageChanged.InvokeAsync(CurrentPage);
+        }
+    }
+
+}

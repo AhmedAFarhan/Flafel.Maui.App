@@ -1,0 +1,43 @@
+﻿@using Flafel.Applications.Dtos.CrewDtos
+@using Flafel.Applications.Features.CrewFeature.Commands.EditCrewTitle
+@using Flafel.Applications.Features.CrewFeature.Query.GetCrewTitleById
+@inherits FormControlBase<CrewTitleDto>
+@inject ISender sender
+
+<TitledForm OnClick="@CollapseForm" Header="مرحباً بعودتك!" Title="قم بتسجيل الدخول من جديد للتطبيق." IsLoading="@IsLoading" ErrorMessage="@ErrorMessage">
+	<EditForm Model="@editCrewTitleCommand" OnValidSubmit="@SubmitFormHandler">
+		<FluentValidationValidator/>
+		<CenterVerticalWrapperUI>
+			<InputsControlsWrapperUI>
+				<TextInputUI FontAwesomeIcon="fa-solid fa-user" Label="اسم المستخدم*" Placeholder="ادخل اسم المستخدم" @bind-Value="editCrewTitleCommand.CrewTitle.Name" ValidationFor="@(() => editCrewTitleCommand.CrewTitle.Name)" />
+			</InputsControlsWrapperUI>			
+			<MainButtonUI IsSubmit="true">تعديل</MainButtonUI>			
+		</CenterVerticalWrapperUI>
+	</EditForm>
+</TitledForm>
+
+@code {
+
+	private EditCrewTitleCommand editCrewTitleCommand = new EditCrewTitleCommand(new EditCrewTitleRequestDto());
+
+	[Parameter]
+	public Guid Id { get; set; }
+
+	protected override async Task OnInit()
+	{
+		var getCrewTitleByIdQuery = new GetCrewTitleByIdQuery(Id);
+		var result = await sender.Send(getCrewTitleByIdQuery);
+		editCrewTitleCommand.CrewTitle.Id = Id;
+		editCrewTitleCommand.CrewTitle.Name = result.CrewTitle.Name;
+	}
+
+	protected override async Task OnSubmit()
+	{
+		var result = await sender.Send(editCrewTitleCommand);
+		var crewTitle = editCrewTitleCommand.CrewTitle;
+		await OnAfterSubmit.InvokeAsync((new CrewTitleDto() {
+				Id = crewTitle.Id,
+				Name = crewTitle.Name
+		}, false));
+	}
+}

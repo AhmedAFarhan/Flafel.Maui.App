@@ -1,12 +1,15 @@
 <OverlayUI OnClick="@OnClick"></OverlayUI>
 <PopupUI>
-    <p class="form__header">@Header</p>
-    <p class="form__title">@Title</p>
-    @ChildContent
-    @if (IsLoading)
-	{
-		<Loading/>
-	}
+    <div class="form">
+        <p class="form__header">@Header</p>
+        <p class="form__title">@Title</p>
+        @ChildContent
+        <FormError IsShown="@(!string.IsNullOrEmpty(ErrorMessage))">@ErrorMessage</FormError>
+        @if (IsLoading)
+        {
+            <Loading />
+        }
+    </div>    
 </PopupUI>
 
 @code{
@@ -22,6 +25,9 @@
 
     [Parameter]
     public bool IsLoading { get; set; } = false;
+
+    [Parameter]
+    public string ErrorMessage { get; set; } = default!;
 
     [Parameter]
     public EventCallback OnClick { get; set; }

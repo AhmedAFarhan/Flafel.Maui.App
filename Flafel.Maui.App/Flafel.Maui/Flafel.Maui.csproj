@@ -72,4 +72,8 @@
       <ProjectReference Include="..\Flafel.Infrastructue\Flafel.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Components\Pages\Base\" />
+    </ItemGroup>
+
 </Project>

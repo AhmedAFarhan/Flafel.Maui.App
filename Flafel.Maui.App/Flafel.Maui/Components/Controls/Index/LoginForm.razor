@@ -1,10 +1,9 @@
 ﻿@using Flafel.Applications.Dtos.UserDtos
 @using Flafel.Applications.Features.UserFeature.Commands.Login
-@using Blazored.FluentValidation;
 @inject ISender sender
 @inject CustomAuthStateProvider AuthProvider
 
-<TitledForm OnClick="@OnClick" Header="مرحباً بعودتك!" Title="قم بتسجيل الدخول من جديد للتطبيق." IsLoading="@isLoading">
+<TitledForm OnClick="@OnClick" Header="مرحباً بعودتك!" Title="قم بتسجيل الدخول من جديد للتطبيق." IsLoading="@isLoading" ErrorMessage="@errorMessage">
 	<EditForm Model="@LoginCommand" OnValidSubmit="@SubmitFormHandler">
 		<FluentValidationValidator/>
 		<CenterVerticalWrapperUI>
@@ -13,7 +12,6 @@
 				<PasswordInputUI FontAwesomeIcon="fa-solid fa-lock-keyhole" Label="كلمة المرور*" Placeholder="ادخل كلمة المرور" @bind-Value="LoginCommand.UserLogin.Password" ValidationFor="@(() => LoginCommand.UserLogin.Password)" />
 			</InputsControlsWrapperUI>			
 			<MainButtonUI IsSubmit="true">دخول</MainButtonUI>
-			<FormError IsShown="@(!string.IsNullOrEmpty(errorMessage))">@errorMessage</FormError>
 		</CenterVerticalWrapperUI>
 	</EditForm>
 </TitledForm>

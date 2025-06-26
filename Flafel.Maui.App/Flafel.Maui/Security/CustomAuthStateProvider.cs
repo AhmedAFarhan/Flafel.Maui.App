@@ -1,5 +1,4 @@
 ﻿using Blazored.LocalStorage;
-using Flafel.Applications.Contracts;
 using Flafel.Applications.Dtos.UserDtos;
 using Flafel.Applications.UnitOfWork;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -12,14 +11,13 @@ namespace Flafel.Maui.Security
         private readonly ILocalStorageService _localStorage;
         private const string UserInfoKey = "flafelAuthUser";
         private UserLoginResponseDto? _currentUser;
-        private readonly IUnitOfWork _unitOfWork;
 
         public bool IsSignedIn { get => _currentUser is null ? false : true; }
+        public UserLoginResponseDto? CurrentUser { get => _currentUser is null ? null : _currentUser; }
 
-        public CustomAuthStateProvider(ILocalStorageService localStorage, IUnitOfWork unitOfWork)
+        public CustomAuthStateProvider(ILocalStorageService localStorage)
         {
             _localStorage = localStorage;
-            _unitOfWork = unitOfWork;
         }
 
 		public async Task SignedInAsync(UserLoginResponseDto currentUser)
@@ -27,7 +25,6 @@ namespace Flafel.Maui.Security
             try
             {
                 _currentUser = currentUser;
-                //await _localStorage.SetItemAsync(UserInfoKey, currentUser.Username);
                 await _localStorage.SetItemAsync(UserInfoKey, currentUser);
                 NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
             }
@@ -64,7 +61,7 @@ namespace Flafel.Maui.Security
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, _currentUser.Username),
-                        //new Claim("FullName", _currentUser.FullName),
+                        new Claim(ClaimTypes.NameIdentifier, _currentUser.Id.ToString())
                     };
 
                     foreach (var role in _currentUser.UserRolesDtos)
@@ -83,7 +80,7 @@ namespace Flafel.Maui.Security
 
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
-            catch(Exception ex)
+            catch
             {
                 throw;
             }

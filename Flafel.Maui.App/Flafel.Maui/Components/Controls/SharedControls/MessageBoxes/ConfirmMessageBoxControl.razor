@@ -1,0 +1,45 @@
+﻿<OverlayUI OnClick="@CollapseOverlayHandler" />
+<PopupUI>
+	<div class="message-box">
+		<p>@Message</p>
+		<MainButtonUI OnClick="@DeleteingItemHandler">حذف</MainButtonUI>
+		@if (inProgress)
+		{
+			<Loading />
+		}
+
+	</div>
+</PopupUI>
+
+@code {
+
+	private bool inProgress = false;
+
+	[Parameter]
+	public string Message { get; set; } = default!;
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	[Parameter]
+	public EventCallback CollapseOverlay { get; set; }
+
+	[Parameter]
+	public EventCallback OnDeleteItem { get; set; }
+
+	private async Task DeleteingItemHandler()
+	{
+		inProgress = true;
+		await OnDeleteItem.InvokeAsync();
+		inProgress = false;
+	}
+
+	private async Task CollapseOverlayHandler()
+	{
+		if (!inProgress)
+		{
+			await CollapseOverlay.InvokeAsync();
+		}
+	}
+
+}

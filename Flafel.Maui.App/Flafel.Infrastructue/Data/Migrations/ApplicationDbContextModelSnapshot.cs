@@ -249,7 +249,7 @@ namespace Flafel.Infrastructure.Data.Migrations
             modelBuilder.Entity("Flafel.Domain.Models.UserRole", b =>
                 {
                     b.HasOne("Flafel.Domain.Models.Role", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -270,6 +270,11 @@ namespace Flafel.Infrastructure.Data.Migrations
                         .HasForeignKey("UserRoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Flafel.Domain.Models.Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Flafel.Domain.Models.SystemUser", b =>

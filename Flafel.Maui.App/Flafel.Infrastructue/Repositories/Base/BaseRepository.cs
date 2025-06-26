@@ -8,7 +8,7 @@ namespace Flafel.Infrastructure.Repositories.Base
     {
         protected readonly DbSet<T> _dbSet = dbContext.Set<T>();
 
-        public async Task<IEnumerable<T>> GetAllAsync(int pageIndex = 1, int pageSize = 20, string? filterQuery = null, string? filterValue = null, Expression<Func<T, bool>>? baseFilter = null, Expression<Func<T, object>>[]? includes = null)
+        public async Task<IEnumerable<T>> GetAllAsync(int pageIndex = 1, int pageSize = 3, string? filterQuery = null, string? filterValue = null, Expression<Func<T, bool>>? baseFilter = null, Expression<Func<T, object>>[]? includes = null, CancellationToken cancellationToken = default)
         {
             var query = _dbSet.AsQueryable();
 
@@ -36,42 +36,61 @@ namespace Flafel.Infrastructure.Repositories.Base
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(Guid id, Expression<Func<T, object>>[] includes = null)
+        public async Task<T?> GetByIdAsync<TId>(TId id, Expression<Func<T, object>>[] includes = null, CancellationToken cancellationToken = default)
         {
-            var query = _dbSet.AsQueryable();
+			var query = _dbSet.AsQueryable();
 
-            //Includes
-            if (includes is not null)
+			//Includes
+			if (includes is not null)
             {
                 foreach (var include in includes)
                     query = query.Include(include);
 
-                return await query.FirstOrDefaultAsync(i => EF.Property<Guid>(i, "Id") == id);
-            }
+                var idValue = typeof(TId).GetProperty("Value")?.GetValue(id);
+
+				return await query.FirstOrDefaultAsync(i => EF.Property<Guid>(i, "Id") == (Guid)idValue);
+			}
             else
             {
-                return await _dbSet.FindAsync(id);
+				return await _dbSet.FindAsync(id);
             }
         }
 
-        public async Task<T> AddOneAsync(T entity, Expression<Func<T, object>>[] includes = null)
+		public async Task<T?> GetByPropertyAsync(Expression<Func<T, bool>> property, Expression<Func<T, object>>[] includes = null, CancellationToken cancellationToken = default)
+		{
+			var query = _dbSet.AsQueryable();
+
+			// Apply property filter
+			query = query.Where(property);
+
+			//Includes
+			if (includes is not null)
+			{
+				foreach (var include in includes)
+					query = query.Include(include);				
+			}
+
+			return await query.FirstOrDefaultAsync();
+		}
+
+		public async Task<T> AddOneAsync(T entity, Expression<Func<T, object>>[] includes = null, CancellationToken cancellationToken = default)
         {
             await _dbSet.AddAsync(entity);
             return entity;
         }
 
-        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
         {
             await _dbSet.AddRangeAsync(entities);
             return entities;
         }
 
-        public Task<T?> UpdateAsync(Guid id, T entity, Expression<Func<T, object>>[] includes = null)
+        public Task<T?> UpdateAsync(Guid id, T entity, Expression<Func<T, object>>[] includes = null, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<T?> DeleteAsync(Guid id)
+        public async Task<T?> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var item = await _dbSet.FindAsync(id);
             if (item is not null)
@@ -81,7 +100,7 @@ namespace Flafel.Infrastructure.Repositories.Base
             return item;
         }
 
-        public async Task<long> GetCountAsync(string? filterQuery = null, string? filterValue = null, Expression<Func<T, bool>>? baseFilter = null)
+        public async Task<long> GetCountAsync(string? filterQuery = null, string? filterValue = null, Expression<Func<T, bool>>? baseFilter = null, CancellationToken cancellationToken = default)
         {
             var query = _dbSet.AsQueryable();
 

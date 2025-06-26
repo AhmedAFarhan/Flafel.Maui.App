@@ -2,7 +2,7 @@
 {
     public interface IUserRepository : IBaseRepository<SystemUser>
     {
-        Task<bool> IsUserExist(string username);
-        Task<SystemUser?> GetUserByUsernameAsync(string username);
+        Task<bool> IsUserExist(string username, CancellationToken cancellationToken = default);
+        Task<SystemUser?> GetUserByUsernameAsync(string username, CancellationToken cancellationToken = default);
     }
 }

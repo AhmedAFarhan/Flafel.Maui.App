@@ -1,0 +1,26 @@
+﻿@page "/crew-titles"
+@using Flafel.Applications.Dtos.CrewDtos
+@using Flafel.Applications.Features.CrewFeature.Query.GetCrewTitles
+@inject ISender sender
+
+<div class="page">
+    <TablePageControl T="CrewTitleDto" OnLoadingPage="@LoadingPageHandler" AddButtonText="نوع جديد">
+        <AddFromControl Context="ctx">
+            <AddCrewTitleFormControl OnAfterSubmit="@ctx.UpdateUI" OnCollapse="@(() => ctx.HideAddForm())" />
+        </AddFromControl>
+        <EditFromControl Context="ctx">
+            <EditCrewTitleFormControl Id="@ctx.Id" OnAfterSubmit="@ctx.UpdateUI" OnCollapse="@(() => ctx.HideEditForm())" />
+        </EditFromControl>
+    </TablePageControl>
+</div>
+
+@code {
+
+    private async Task<PaginatedResult<CrewTitleDto>> LoadingPageHandler(string? search, int index)
+    {
+        var getCrewTitlesQuery = new GetCrewTitlesQuery(new PaginationRequest { PageIndex = index, FilterValue = search });
+        await Task.Delay(1000);
+        var result = await sender.Send(getCrewTitlesQuery);
+        return result.CrewTitlesPage;
+    }
+}

@@ -1,16 +1,10 @@
 .sidebar {
+    grid-column: 1;
+    grid-row : 1 / span 2;
     padding: 1rem 0rem;
-    width: 16rem;
-    height: calc(100vh - 7rem);
-    position: fixed;
-    top: 0;
-    right: 0;
-    background: white;
-    /*    transition: all .5s ease;*/
-    direction: rtl;
+    background-color: white;
     z-index: 10;
-    margin: 3.5rem;
-    color: var(--color-secondary);
+    direction: rtl;
     border-left: 1px solid var(--color-dark-gray);
 }
 

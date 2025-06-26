@@ -8,14 +8,14 @@ namespace Flafel.Applications.Features.UserFeature.Commands.Login
         {
             var repo = unitOfWork.GetCustomRepository<IUserRepository>();
 
-            var user = await repo.GetUserByUsernameAsync(command.UserLogin.Username);
+            var user = await repo.GetUserByUsernameAsync(command.UserLogin.Username, cancellationToken: cancellationToken);
 
             if (user is null || passwordHasher.VerifyHashedPassword(null, user.PasswordHash, command.UserLogin.Password) == PasswordVerificationResult.Failed)
             {
                 throw new BadRequestException("اسم المستخدم او الرقم السرى غير صحيح");
             }
 
-            var userDto = user.ToUserDto();
+            var userDto = user.ToUserLoginResponseDto();
 
             return new LoginResult(userDto);
         }

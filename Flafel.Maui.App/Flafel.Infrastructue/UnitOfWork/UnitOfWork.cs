@@ -25,7 +25,7 @@ namespace Flafel.Infrastructure.UnitOfWork
             return serviceProvider.GetRequiredService<TRepository>();
         }
 
-        public async Task SaveChangesAsync()
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await dbContext.SaveChangesAsync();
         }

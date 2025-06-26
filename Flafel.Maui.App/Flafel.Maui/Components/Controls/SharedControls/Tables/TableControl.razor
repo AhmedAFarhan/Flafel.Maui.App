@@ -1,0 +1,150 @@
+﻿@using System.Reflection
+@inject IJSRuntime JSRuntime
+@typeparam T
+
+<div class="container">
+	<div class="@Classes">
+		@if(Items is not null)
+		{
+			@if (Items.Count == 0)
+			{
+				<div class="empty-container">
+					<div class="not-fount">
+						<img src="./Assets/Images/no-results-png-128.png" alt="empty" />
+						<p>لا توجد بيانات للعرض !</p>
+					</div>
+				</div>
+			}
+			else
+			{
+				<table @ref="table" class="table">
+					<thead>
+						<tr>
+							@foreach (var prop in Props)
+							{
+								<th>@prop</th>
+							}
+							<th class="table__action"></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var item in Items)
+						{
+							<tr>
+								@foreach (var prop in Props)
+								{
+									object target = item;
+									var names = prop.Split('.');
+
+									foreach (var name in names)
+									{
+										var typeOfT = target.GetType();
+										var propInfo = typeOfT.GetProperty(name);
+										target = propInfo.GetValue(target);
+									}
+
+									@if (target.GetType() == typeof(DateTime))
+									{
+										<td>@(((DateTime)target).ToString("MM/dd/yyyy"))</td>
+									}
+									else
+									{
+										<td>@target</td>
+									}
+								}
+
+								<td id="@($"popup-{item.GetType().GetProperty("Id").GetValue(item).ToString()}")" class="table__action">									
+									<button @onclick="@(() => TogglePopup(new Guid(item.GetType().GetProperty("Id").GetValue(item).ToString())))"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+									<div class="@(activePopupId == new Guid(item.GetType().GetProperty("Id").GetValue(item).ToString()) ? "table__action-content show-popup" : "table__action-content")">
+										<button @onclick="@((e) => OnEditItem.InvokeAsync(new Guid(item.GetType().GetProperty("Id").GetValue(item).ToString())))">
+											<i class="fa-regular fa-pen-to-square"></i>
+											<span>تعديل</span>
+										</button>
+										<button @onclick="@((e) => OnDeleteItem.InvokeAsync(new Guid(item.GetType().GetProperty("Id").GetValue(item).ToString())))">
+											<i class="fa-regular fa-trash-xmark"></i>
+											<span>حذف</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+			@if (IsLoading)
+			{
+				<Loading></Loading>
+			}
+		}
+		else
+		{
+			<Loading></Loading>
+		}
+	</div>
+</div>
+
+@code {
+
+	private Guid? activePopupId = null;
+	
+	ElementReference table = default!;
+	private bool isFullyloaded = false;
+
+	[Parameter]
+	public IEnumerable<string> Props { get; set; } = default!;
+
+	[Parameter]
+	public bool IsLoading { get; set; }
+
+	[Parameter]
+	public List<T> Items { get; set; } = default!;
+
+	[Parameter]
+	public long TotalRecord { get; set; }
+
+	[Parameter]
+	public RenderFragment @ChildContent { get; set; } = default!;
+
+	[Parameter]
+	public EventCallback<Guid> OnDeleteItem { get; set; } = default!;
+
+	[Parameter]
+	public EventCallback<Guid> OnEditItem { get; set; }
+
+	[Parameter]
+	public string Class { get; set; } = default!;
+
+	public string Classes { get => Class is null ? "table-container" : $"table-container {Class}"; }
+
+	private async Task TogglePopup(Guid id)
+	{
+		if (activePopupId == id)
+		{
+			activePopupId = null;
+		}
+		else
+		{
+			// Small delay to ensure JavaScript picks up the new state
+			await Task.Delay(50);
+			activePopupId = activePopupId == id ? null : id;
+		}
+		
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!isFullyloaded && Items != null && Items.Count > 0 && table.Id != null)
+		{
+			await JSRuntime.InvokeVoidAsync("setupClosingTablePopup", table, DotNetObjectReference.Create(this));
+			isFullyloaded = true;
+		}
+	}
+
+	[JSInvokable]
+	public void ClosePopup()
+	{
+		activePopupId = null;
+		StateHasChanged();
+	}
+
+}

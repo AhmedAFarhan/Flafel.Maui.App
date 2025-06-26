@@ -1,0 +1,25 @@
+﻿@page "/users"
+@using Flafel.Applications.Dtos.UserDtos
+@using Flafel.Applications.Features.UserFeature.Queries.GetUsers
+@inject NavigationManager Navigation
+@inject ISender sender
+
+<div class="page">
+    <CardPageControl T="UserDto" AddButtonText="مستخدم جديد" OnLoadingPage="@LoadingPageHandler" NavigateToAddForm="/new-user">
+        <CardControl>
+            <UserCardControl/>
+        </CardControl>
+    </CardPageControl>
+</div>
+
+
+@code {
+
+    private async Task<PaginatedResult<UserDto>> LoadingPageHandler(string? search, int index)
+    {
+        var getGetUsersQuery = new GetUsersQuery(new PaginationRequest { PageIndex = index, FilterValue = search });
+        await Task.Delay(100);
+        var result = await sender.Send(getGetUsersQuery);
+        return result.users;
+    }
+}

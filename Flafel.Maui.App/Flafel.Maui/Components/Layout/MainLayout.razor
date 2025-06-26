@@ -3,19 +3,18 @@
 @inject InitialDatabase initDatabse
 @inject CustomAuthStateProvider AuthProvider
 
-<div class="page">
-
+<div class="page @(!IsAuth ? "not-auth" : "")">
     <AuthorizeView>
         <Authorized>
-            <NavMenu/>
+            <NavMenu />
+            <NavActionsMenu />
         </Authorized>
     </AuthorizeView>
 
-    <main class="@(!IsAuth ? "normal" : IsOpen ? "open" : "")">
-        @Body
-    </main>
-
+    <main class="@(!IsAuth ? "not-auth" : "")">@Body</main>
 </div>
+
+@* class="@(!IsAuth ? "normal" : IsOpen ? "open" : "")" *@
 
 @code {
 

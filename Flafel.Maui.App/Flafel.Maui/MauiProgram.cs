@@ -5,6 +5,7 @@ using Flafel.Applications;
 using Microsoft.Extensions.Configuration;
 using Flafel.Maui.Security;
 using Microsoft.AspNetCore.Components.Authorization;
+using Flafel.Applications.Contracts.UserContext;
 
 namespace Flafel.Maui
 {
@@ -32,8 +33,9 @@ namespace Flafel.Maui
 
 			builder.Services.AddScoped<CustomAuthStateProvider>();
 			builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthStateProvider>());
+            builder.Services.AddScoped<IUserContext, UserContext>();
 
-			builder.Services.AddAuthorizationCore();
+            builder.Services.AddAuthorizationCore();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

@@ -1,10 +1,11 @@
-﻿namespace Flafel.Infrastructure.Repositories
+﻿
+namespace Flafel.Infrastructure.Repositories
 {
     public class UserRepository<TContext> : BaseRepository<SystemUser, TContext>, IUserRepository where TContext : DbContext
     {
         public UserRepository(TContext dbContext) : base(dbContext) { }
 
-        public async Task<SystemUser?> GetUserByUsernameAsync(string username)
+        public async Task<SystemUser?> GetUserByUsernameAsync(string username, CancellationToken cancellationToken = default)
         {
             return await _dbSet.AsNoTracking().Include(x => x.UserRoles)
                                     .ThenInclude(x => x.Role)
@@ -14,9 +15,10 @@
 
         }
 
-        public async Task<bool> IsUserExist(string username)
+        public async Task<bool> IsUserExist(string username, CancellationToken cancellationToken = default)
         {
             return await _dbSet.AnyAsync(u => u.UserName == username);
         }
+
     }
 }

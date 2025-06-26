@@ -1,10 +1,10 @@
-﻿using Flafel.Domain.Abstractions.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Flafel.Applications.Contracts.UserContext;
+using Flafel.Domain.Abstractions.Interfaces;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Flafel.Infrastructure.Data.Interceptors
 {
-    public class AuditableEntityInterceptor : SaveChangesInterceptor
+    public class AuditableEntityInterceptor(IUserContext userContext) : SaveChangesInterceptor
     {
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
@@ -26,14 +26,14 @@ namespace Flafel.Infrastructure.Data.Interceptors
             {
                 if (entity.State == EntityState.Added)
                 {
-                    entity.Entity.CreatedBy = SystemUserId.Of(Guid.NewGuid());
-                    entity.Entity.CreatedAt = DateTime.UtcNow;
+                    entity.Entity.CreatedBy = SystemUserId.Of(userContext.GetUserId());
+                    entity.Entity.CreatedAt = DateTime.Now;
                 }
 
                 if (entity.State == EntityState.Added || entity.State == EntityState.Modified)
                 {
-                    entity.Entity.LastModifiedBy = null;
-                    entity.Entity.LastModifiedAt = DateTime.UtcNow;
+                    entity.Entity.LastModifiedBy = SystemUserId.Of(userContext.GetUserId());
+                    entity.Entity.LastModifiedAt = DateTime.Now;
                 }
             }
         }

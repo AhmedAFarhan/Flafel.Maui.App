@@ -9,3 +9,5 @@ global using FluentValidation;
 global using Flafel.Applications.Exceptions;
 global using Flafel.Domain.Enums;
 global using Flafel.Applications.Extensions;
+global using Flafel.Domain.ValueObjects;
+global using Flafel.Applications.Pagination;

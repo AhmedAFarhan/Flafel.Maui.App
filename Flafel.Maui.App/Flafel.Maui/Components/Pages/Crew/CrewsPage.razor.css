@@ -1,0 +1,67 @@
+﻿.page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+header {
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.content {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.table-container {
+    overflow-y: auto;
+    max-height: 80%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: relative;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+    position: sticky;
+    top: 0;
+}
+
+td {
+    position: relative; /* Makes popup relative to each table cell */
+}
+
+.popup {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 10;
+    margin-top: 5px;
+    width: 150px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    left: 0; /* Adjust if needed */
+    top: 100%; /* Ensures it appears below the button */
+}

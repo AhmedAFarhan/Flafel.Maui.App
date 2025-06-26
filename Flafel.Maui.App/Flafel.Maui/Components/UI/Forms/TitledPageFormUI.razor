@@ -1,0 +1,22 @@
+
+<div class="form">
+    <p class="form__header">@Header</p>
+    <p class="form__title">@Title</p>
+    <div class="form__icon"><i class="@Icon"></i></div>
+    @ChildContent
+</div>
+
+@code{
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public string Header { get; set; } = default!;
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public string Icon { get; set; } = default!;
+}

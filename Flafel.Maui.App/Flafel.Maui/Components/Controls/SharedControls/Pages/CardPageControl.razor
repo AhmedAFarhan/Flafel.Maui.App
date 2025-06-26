@@ -1,0 +1,194 @@
+﻿@using System.Reflection
+@typeparam T where T : class
+@inject NavigationManager Navigation
+
+<div class="page">
+    @if (!onInitialization)
+    {
+        <div class="page__actions">
+            <MainButtonUI Class="page__btn" OnClick="ShowAddForm">@AddButtonText</MainButtonUI>
+        </div>
+    }
+    @if(items is not null)
+    {
+        <ul class="page__list">
+            @foreach (var item in items)
+            {
+                <li class="page__card">
+                    <button class="page__btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    @CardControl
+                </li>
+            }
+        </ul>
+    }
+   @*  <TableControl T="@T" Items="@items" Props="@props" IsLoading="@isLoading" OnDeleteItem="@ShowDeleteForm" OnEditItem="@ShowEditForm" /> *@
+    @if (!onInitialization && items is not null && items.Count > 0)
+    {
+        <div class="page__footer">
+            <div class="page__result">عرض من @startRecord إلى @endRecord من اصل @totalRecords عنصر</div>
+            <PaginationUI @ref="@paginationUIRef" TotalPages="@totalPages" OnPageChanged="PageChangedHandlerAsync" IsLoading="isLoading" />
+        </div>
+    }
+    @if (isLoading)
+    {
+        <Loading/>
+    }
+</div>
+
+@if (addFormIsShown)
+{
+    @AddFromControl((UpdateUI, HideAddForm))
+}
+@if (editFormIsShown)
+{
+    @EditFromControl((currentItemId, UpdateUI, HideEditForm))
+}
+@if (deleteFormIsShown)
+{
+    <ConfirmMessageBoxControl Message="Hello Ahmed Mohjammed Khaled Dina Mostafa Mahmoude"
+                              CollapseOverlay="@HideDeleteForm"
+                              OnDeleteItem="@DeleteItemHandler" />
+}
+
+@code{
+
+    private List<T> items = default!;
+    private bool onInitialization = false;
+    private bool isLoading = false;
+    private bool deleteFormIsShown = false;
+    private bool editFormIsShown = false;
+    private bool addFormIsShown = false;
+    private long totalRecords;
+    private int startRecord;
+    private int endRecord;
+    private int totalPages;
+    public Guid currentItemId = Guid.Empty;
+    private string search = string.Empty;
+    private PaginationUI paginationUIRef = default!;
+
+    [Parameter]
+    public string AddButtonText { get; set; } = string.Empty;
+
+    [Parameter]
+    public Func<string?, int, Task<PaginatedResult<T>>> OnLoadingPage { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<(Action<(T, bool)> UpdateUI, Action HideAddForm)> AddFromControl { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<(Guid Id, Action<(T, bool)> UpdateUI, Action HideEditForm)> EditFromControl { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment CardControl { get; set; } = default!;
+
+    [Parameter]
+    public string NavigateToAddForm { get; set; } = string.Empty;
+
+    [Parameter]
+    public string NavigateToEditForm { get; set; } = string.Empty;
+
+    private void ShowDeleteForm(Guid id)
+    {
+        currentItemId = id;
+        deleteFormIsShown = true;
+    }
+    private void HideDeleteForm() => deleteFormIsShown = false;
+    private void ShowEditForm(Guid id)
+    {
+        currentItemId = id;
+        editFormIsShown = true;
+    }
+    private void HideEditForm() => editFormIsShown = false;
+    private void ShowAddForm()
+    {
+        if (!isLoading)
+        {
+            if(!string.IsNullOrEmpty(NavigateToAddForm))
+            {
+                Navigation.NavigateTo(NavigateToAddForm);
+            }
+            else
+            {
+                addFormIsShown = true;
+            }            
+        }
+    }
+    private void HideAddForm() => addFormIsShown = false;
+    private void UpdateUI((T newItem, bool isInserted) data)
+    {
+        if (!data.isInserted)
+        {
+            var id = GetId(data.newItem);
+            var prevItemIndex = items.FindIndex(i => Equals(GetId(i), id));
+            if (prevItemIndex != -1)
+            {
+                items.RemoveAt(prevItemIndex);
+                items.Insert(prevItemIndex, data.newItem);
+            }
+        }
+        else
+        {
+            items.Add(data.newItem);
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            onInitialization = true;
+            isLoading = true;
+
+            await Task.Delay(1000);
+            var response = await OnLoadingPage.Invoke(search, 1);
+
+            items = response.Data.ToList();
+            totalRecords = response.Count;
+
+            startRecord = 1;
+            endRecord = (int)Math.Min(1 * response.PageSize, totalRecords);
+            totalPages = (int)Math.Ceiling(response.Count / (double)response.PageSize);
+
+            var itemType = typeof(T);
+            var itemProps = itemType.GetProperties();
+        }
+        catch(Exception ex)
+        {
+            throw;
+        }
+        finally
+        {
+            isLoading = false;
+            onInitialization = false;
+        }            
+    }
+
+    protected async Task PageChangedHandlerAsync(int pageNumber)
+    {
+        try
+        {
+            isLoading = true;
+            await Task.Delay(1000);
+            var response = await OnLoadingPage.Invoke(search, pageNumber);
+            items = response.Data.ToList();
+            startRecord = ((paginationUIRef.CurrentPage - 1) * response.PageSize) + 1;
+            endRecord = (int)Math.Min(paginationUIRef.CurrentPage * response.PageSize, totalRecords);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    protected async Task DeleteItemHandler()
+    {
+        await Task.Delay(5000);
+    }
+
+    /******** Helpers **********/
+    private Guid GetId<T>(T obj) => (Guid)obj.GetType().GetProperties().FirstOrDefault(p => p.Name == "Id")?.GetValue(obj);
+}
